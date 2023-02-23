@@ -1,5 +1,5 @@
 function Center() {
-  return <div>Center</div>;
+   return <div>Center</div>
 }
 
-export default Center;
+export default Center

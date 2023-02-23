@@ -13,7 +13,7 @@ const refreshAccessToken = async (
       // "Hey Spotify, please refresh my access token"
       const {body: refreshedTokens} = await spotifyApi.refreshAccessToken()
 
-      console.log('REFRESHED TOKENS ARE: ', refreshedTokens)
+      // console.log('REFRESHED TOKENS ARE: ', refreshedTokens)
 
       return {
          ...token,
@@ -44,18 +44,18 @@ const jwtCallback: CallbacksOptions['jwt'] = async ({token, account, user}) => {
          accessTokenExpiresAt: (account.expires_at as number) * 1000, // converted to ms
       }
 
-      console.log('FIRST TIME LOGIN, EXTENDED TOKEN: ', extendedToken)
+      // console.log('FIRST TIME LOGIN, EXTENDED TOKEN: ', extendedToken)
       return extendedToken
    }
 
    // Subsequent requests to check auth sessions
    if (Date.now() + 5000 < (token as ExtendedToken).accessTokenExpiresAt) {
-      console.log('ACCESS TOKEN STILL VALID, RETURNING EXTENDED TOKEN: ', token)
+      // console.log('ACCESS TOKEN STILL VALID, RETURNING EXTENDED TOKEN: ', token)
       return token
    }
 
    // Access token has expired, refresh it
-   console.log('ACCESS TOKEN EXPIRED, REFRESHING...')
+   // console.log('ACCESS TOKEN EXPIRED, REFRESHING...')
    return await refreshAccessToken(token as ExtendedToken)
 }
 
@@ -63,11 +63,9 @@ const sessionCallback: CallbacksOptions['session'] = async ({
    session,
    token,
 }) => {
-   return {
-      ...session,
-      accessToken: (token as ExtendedToken).accessToken,
-      error: (token as ExtendedToken).error,
-   }
+   Object.assign(session, {accessToken: (token as ExtendedToken).accessToken})
+   Object.assign(session, {error: (token as ExtendedToken).error})
+   return session
 }
 
 export default NextAuth({
