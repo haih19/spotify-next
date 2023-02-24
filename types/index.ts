@@ -24,9 +24,30 @@ export interface PlaylistContextState {
    selectedPlaylist: SpotifyApi.SinglePlaylistResponse | null
 }
 
+export interface SongContextState {
+   selectedSongId?: string
+   selectedSong: any | null
+   volume: number
+   isPlaying: boolean
+   deviceId: string | null
+}
+
 export interface IPlaylistContext {
    playlistContextState: PlaylistContextState
    updatePlaylistContextState: (
       updateObj: Partial<PlaylistContextState>
    ) => void
+}
+
+export interface ISongContext {
+   songContextState: SongContextState
+}
+
+export enum SongReducerActionType {
+   SetDevice = 'SetDevice',
+}
+
+export type SongReducerAction = {
+   type: SongReducerActionType.SetDevice
+   payload: Pick<SongContextState, 'deviceId' | 'volume'>
 }
