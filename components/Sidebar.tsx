@@ -7,14 +7,12 @@ import {
    faWifi,
 } from '@fortawesome/free-solid-svg-icons'
 import IconButton from './IconButton'
-import {useSession, signOut} from 'next-auth/react'
 import {usePlaylistContext} from '@/contexts/PlaylistContext'
 import useSpotify from '../hooks/useSpotify'
 
 const Divider = () => <hr className="border-t-[0.1px] border-gray-900" />
 
 function Sidebar() {
-   const {data: session} = useSession()
    const spotifyApi = useSpotify()
 
    const {
@@ -34,14 +32,6 @@ function Sidebar() {
    return (
       <div className=" scrollbar-hidden text-gray-500 px-5 pt-5 pb-36 text-xs lg:text-sm border-r border-gray-900 h-screen overflow-y-scroll sm:max-w-[12rem] lg:max-w-[15rem] hidden md:block ">
          <div className="space-y-4">
-            {session?.user && (
-               <button
-                  onClick={() => {
-                     signOut()
-                  }}>
-                  {session.user.name} - Log Out
-               </button>
-            )}
             <IconButton
                icon={faHome}
                label="Home"
